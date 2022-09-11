@@ -1,10 +1,5 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace CSharpShell
 {
@@ -70,11 +65,10 @@ namespace CSharpShell
             }
         }
 
-        private static readonly string _v = "mmmmmmmmm";
         internal static void Main()
         {
             const string helloMsg = "Slap the Earth!";
-            Console.WriteLine(_v + helloMsg);
+            Console.WriteLine(helloMsg);
             Loop();
         }
     }
