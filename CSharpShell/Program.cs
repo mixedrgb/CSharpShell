@@ -1,14 +1,15 @@
-﻿using System.ComponentModel.Design;
+﻿using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace CSharpShell
 {
     public class CSharpShell
     {
-        private static int exitCount = 0;
         private static void Help()
         {
             Console.WriteLine("This is a help message");
@@ -16,13 +17,34 @@ namespace CSharpShell
 
         private static void DoStuff(string args)
         {
-            var arr = args.Split('\u002C');
-            foreach (var item in arr)
+            var arr = args.Split('\u0020');
+            if (arr[0] == "")
             {
-                // do stuff
-                Process p = new Process();
-                p.StartInfo = new ProcessStartInfo(item);
+                Console.WriteLine("wat");
+                return;
+            }
+
+            var p = new Process();
+            if (arr.Length > 1)
+            {
+                p.StartInfo = new ProcessStartInfo(arr[0], arr[1]);
+            }
+            else
+            {
+                p.StartInfo = new ProcessStartInfo(arr[0]);
+            }
+            try
+            {
                 p.Start();
+                p.WaitForExit();
+            }
+            catch (Win32Exception)
+            {
+                Console.WriteLine("Oops 1");
+            }
+            catch (InvalidOperationException)
+            {
+                Console.WriteLine("Oops 2");
             }
         }
 
@@ -34,11 +56,12 @@ namespace CSharpShell
                 var args = Console.ReadLine();
                 switch (args)
                 {
+                    case "exit":
+                        Console.WriteLine("Hey thanks, bro");
+                        Environment.Exit(0);
+                        break;
                     case "help":
                         Help();
-                        break;
-                    case "exit":
-                        Environment.Exit(0);
                         break;
                     default:
                         DoStuff(args);
@@ -47,10 +70,11 @@ namespace CSharpShell
             }
         }
 
+        private static readonly string _v = "mmmmmmmmm";
         internal static void Main()
         {
-            const string HelloMsg = "Slap the Earth!";
-            Console.WriteLine(HelloMsg);
+            const string helloMsg = "Slap the Earth!";
+            Console.WriteLine(_v + helloMsg);
             Loop();
         }
     }
