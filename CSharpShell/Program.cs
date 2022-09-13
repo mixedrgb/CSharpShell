@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
+using Microsoft.VisualBasic;
 
 namespace CSharpShell
 {
@@ -43,14 +46,36 @@ namespace CSharpShell
             }
         }
 
+        private static void changeDir(string[] args)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 1; i < args.Length; i++)
+            {
+                sb.Append(args[i]);
+            }
+
+            try
+            {
+                Directory.SetCurrentDirectory(sb.ToString());
+            }
+            catch (DirectoryNotFoundException)
+            {
+                Console.WriteLine("how dare u");
+            }
+        }
         private static void Loop()
         {
             while (true)
             {
                 Console.Write("> ");
-                var args = Console.ReadLine();
-                switch (args)
+                string args = Console.ReadLine();
+                string[] useArgs = args.Split(' ');
+                switch (useArgs[0])
                 {
+                    case "cd":
+                        changeDir(useArgs);
+                        break;
                     case "exit":
                         Console.WriteLine("Hey thanks, bro");
                         Environment.Exit(0);
